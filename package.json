@@ -1,0 +1,22 @@
+{
+  "name": "note-app-backend",
+  "version": "1.0.0",
+  "description": "Backend for flutter note app",
+  "main": "server.js",
+  "scripts": {
+    "server": "nodemon server.js",
+    "test": "mocha --recursive --exit"
+  },
+  "author": "MONSTER",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "chai": "^4.3.4",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mocha": "^8.4.0",
+    "mongoose": "^5.12.9",
+    "nodemon": "^2.0.7",
+    "supertest": "^6.1.3"
+  }
+}
