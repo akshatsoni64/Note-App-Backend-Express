@@ -6,7 +6,7 @@ class NoteController {
     }
 
     get_items(request, response) {
-        console.log("\nFetching Notes");
+        console.log("\nGET: /api/v1/notes/", new Date(), "Fetching Notes");
         Note.find()
             .then((notes) => response.send(notes))
             .catch((err) => console.log(err));
@@ -20,7 +20,7 @@ class NoteController {
     }
 
     post_items(request, response) {
-        console.log("Adding Note");
+        console.log("\nPOST: /api/v1/notes/", new Date(), "Adding Note");
         const newNote = new Note({
             title: request.body.title,
             labels: request.body.labels,
@@ -35,8 +35,8 @@ class NoteController {
     }
 
     update_item(request, response){
-        var new_data = {}
-        
+        console.log("\nPUT: /api/v1/notes/"+request.params.id, new Date(), "Updating Note");
+        var new_data = {}        
         if(request.body.title != null){ new_data['title'] = request.body.title }
         if(request.body.sec_text != null){ new_data['sec_text'] = request.body.sec_text }
         if(request.body.text != null){ new_data['text'] = request.body.text }
@@ -60,7 +60,7 @@ class NoteController {
     }
 
     delete_item(request, response){
-        console.log(request.params);
+        console.log("\nDELETE: /api/v1/notes/"+request.params.id, new Date(), "Deleting Note");
         Note.findById(request.params.id)
         .then(item => item.remove()
             .then(() => response.status(204).json({ success: true }))
