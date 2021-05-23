@@ -7,16 +7,35 @@ class NoteController {
 
     get_items(request, response) {
         console.log("\nGET: /api/v1/notes/", new Date(), "Fetching Notes");
-        Note.find()
+        if(request.query['labels'] != undefined && request.query['labels'] != ""){
+            Note.find({
+                "labels": request.query['labels']
+            })
             .then((notes) => response.send(notes))
+            .catch((err) => console.log(err))
+        }
+        else{
+            Note.find()
+                .then((notes) => response.send(notes))
+                .catch((err) => console.log(err));
+        }
+    }
+
+
+
+    get_labels(request, response) {
+        console.log("\nGET: /api/v1/labels/", new Date(), "Fetching Labels");
+        Note.distinct("labels")
+            .then((data) => response.send(data))
             .catch((err) => console.log(err));
     }
 
     get_item(request, response) {
+        console.log("\nGET: /api/v1/notes/"+request.params.id, new Date(), "Fetching Note");
         Note.findOne({
             "_id": request.params.id
         })
-            .then((note) => response.send(note))
+        .then((note) => response.send(note))
     }
 
     post_items(request, response) {

@@ -3,7 +3,8 @@ const bodyParser = require('body-parser')
 const app = express()
 const port = 5000
 var cors = require('cors')
-const notes = require('./api/routes/routes')
+const notes = require('./api/routes/notes')
+const labels = require('./api/routes/labels')
 
 var mongoose = require('mongoose')
 var key = require('./config/keys.js').mongoURI;
@@ -27,10 +28,7 @@ app.get('/api/v1/hello/', (req, res) => {
 })
 
 app.use('/api/v1/notes', notes)
-// app.get('/api/v1/notes/', (req, res) => {
-//     console.log("GET /api/v1/notes/ - Fetching notes")
-//     res.send(notes)
-// })
+app.use('/api/v1/labels', labels)
 
 app.listen(port, () => {
     console.log('Server started on', port)

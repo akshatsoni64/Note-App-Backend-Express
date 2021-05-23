@@ -7,7 +7,7 @@ const noteController = new controller();
 
 router.get('/', noteController.get_items);
 
-router.get('/:id', noteController.get_item);
+// router.get('/:id', noteController.get_item);
 
 router.post('', noteController.post_items);
 
