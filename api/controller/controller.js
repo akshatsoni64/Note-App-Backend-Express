@@ -5,8 +5,8 @@ class NoteController {
     constructor() {        
     }
 
-    get_items(request, response) {
-        console.log("\nGET: /api/v1/notes/", new Date(), "Fetching Notes");
+    get_items(request, response) {        
+        console.log("\nGET:", request.originalUrl, new Date(), "Fetching Notes");
         if(request.query['labels'] != undefined && request.query['labels'] != ""){
             Note.find({
                 "labels": request.query['labels']
@@ -21,17 +21,26 @@ class NoteController {
         }
     }
 
-
+    search_notes(request, response){
+        console.log("\nGET:", request.originalUrl, new Date(), "Searching Notes");
+        Note.find({
+            $text:{
+                $search: request.query['search']
+            }
+        }).then((value) => {
+            response.send(value)
+        });
+    }
 
     get_labels(request, response) {
-        console.log("\nGET: /api/v1/labels/", new Date(), "Fetching Labels");
+        console.log("\nGET:", request.originalUrl, new Date(), "Fetching Labels");
         Note.distinct("labels")
             .then((data) => response.send(data))
             .catch((err) => console.log(err));
     }
 
     get_item(request, response) {
-        console.log("\nGET: /api/v1/notes/"+request.params.id, new Date(), "Fetching Note");
+        console.log("\nGET:", request.originalUrl, new Date(), "Fetching Note");
         Note.findOne({
             "_id": request.params.id
         })
@@ -39,7 +48,7 @@ class NoteController {
     }
 
     post_items(request, response) {
-        console.log("\nPOST: /api/v1/notes/", new Date(), "Adding Note");
+        console.log("\nPOST:", request.originalUrl, new Date(), "Adding Note");
         const newNote = new Note({
             title: request.body.title,
             labels: request.body.labels,
@@ -54,7 +63,7 @@ class NoteController {
     }
 
     update_item(request, response){
-        console.log("\nPUT: /api/v1/notes/"+request.params.id, new Date(), "Updating Note");
+        console.log("\nPUT:", request.originalUrl, new Date(), "Updating Note");
         var new_data = {}        
         if(request.body.title != null){ new_data['title'] = request.body.title }
         if(request.body.sec_text != null){ new_data['sec_text'] = request.body.sec_text }
@@ -79,7 +88,7 @@ class NoteController {
     }
 
     delete_item(request, response){
-        console.log("\nDELETE: /api/v1/notes/"+request.params.id, new Date(), "Deleting Note");
+        console.log("\nDELETE:", request.originalUrl, new Date(), "Deleting Note");
         Note.findById(request.params.id)
         .then(item => item.remove()
             .then(() => response.status(204).json({ success: true }))
